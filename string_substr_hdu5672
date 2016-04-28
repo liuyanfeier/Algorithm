@@ -1,0 +1,40 @@
+#include <cstdio>
+#include <iostream>
+#include <cstring>
+#include <algorithm>
+
+using namespace std;
+
+const int maxn = 1000005 ; 
+char str[maxn] ; 
+int vis[100] ; 
+int m ; 
+
+int main()
+{
+	int t ; 
+	scanf("%d",&t) ; 
+	while(t--)
+	{
+		scanf("%s%d",str,&m) ; 
+		int n = strlen(str);
+		memset(vis,0,sizeof(vis));
+		int flag = 0 ;   //指向后面的下标
+		int num = 0 ;    //不同字符的个数
+		long long ans = 0 ; 
+		for(int i = 0 ; i < n ; i++)
+		{   //计算每个以str[i]为开始字符的子串是否满足条件
+			while(num<m&&flag<n)
+			{
+				vis[str[flag]-'a']++ ; 
+				if((vis[str[flag]-'a'])==1)num++;
+				flag++;
+			}
+			if(num==m)ans += n - flag + 1 ;
+			vis[str[i]-'a']-- ; 
+			if((vis[str[i]-'a'])==0)num--;
+		}
+		printf("%I64d\n",ans) ; 
+	}
+	return 0 ; 
+}
