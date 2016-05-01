@@ -1,0 +1,93 @@
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+
+template <class T>
+class myVector
+{
+private:
+	T* data;
+	int len;
+	int size;
+public:
+	myVector()
+	{
+		data = NULL;
+		len = size = 0;
+	}
+
+	myVector(int _len)
+	{
+		data = new T[_len];
+		len = _len;
+		size = 0;
+	}
+
+	myVector(const myVector& tmp)
+	{
+		if(this == &tmp)
+			return;
+
+		data = new T[tmp.len];
+		for(int i=0; i<tmp.size; ++i)
+			data[i] = tmp.data[i];
+		len = tmp.len;
+		size = tmp.size;
+	}
+
+	T& operator[](int index)
+	{
+		return data[index];
+	}
+
+	const myVector& push_back(const T tmp)
+	{
+		if(size >= len)
+		{
+			T* newData = new T[len*2 + 1];
+			memcpy(newData, data, len*sizeof(T));
+			delete []data;
+			data = newData;
+			len = 2*len + 1;
+		}
+		data[size++] = tmp;
+		return *this;
+	}
+
+	int getSize()
+	{
+		return size;
+	}
+
+	void print()
+	{
+		cout<<"len: "<<len<<"   "<<"size: "<<size<<endl;
+		for(int i=0; i<size; ++i)
+			cout<<data[i]<<" ";
+		cout<<endl;
+	}
+};
+
+
+int main()
+{
+
+	myVector<int> v;
+
+	v.push_back(2);
+	v.print();
+	v.push_back(3);
+	v.print();
+	v.push_back(4);
+	v.print();
+	v.push_back(5);
+	v.print();
+	v.push_back(6);
+	v.print();
+
+	cout<<"Size: "<<v.getSize()<<endl;
+
+	system("pause");
+	return 0;
+}
