@@ -1,0 +1,71 @@
+#include <cstdio>
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+//二分查找有序数组
+int binarySearch(int *a , int size , int target)
+{
+	int low = 0 , high = size-1 ;
+	while(low<=high)
+	{
+		int middle = (high-low)/2 + low ;  //直接使用（high+low）>>1 可能会溢出
+		if(a[middle]==target)return middle ; 
+		else if(a[middle]>target) high = middle - 1;
+		else low = middle + 1; 
+	}
+	return -1 ; 
+}
+
+//循环有序数组的二分查找
+int binarySearchCircle(int *a , int size ,int target)
+{
+	int low = 0 , high = size - 1;
+	while(low<=high)
+	{
+		int middle = (high-low)/2 + low;
+		if(a[middle]>=a[low])   //左半边数组有序
+		{
+			if(a[middle]==target) return middle;
+			else if(target>=a[low]&&target<a[middle])
+			{   //target在左半边的范围内
+				high = middle - 1;
+			}
+			else low = middle + 1;
+		}
+		else   //右半边数组有序 
+		{
+			if(a[middle]==target)return middle; 
+			else if(target<=a[high]&&target>a[middle])
+			{    //target在左半边的范围内
+				low = middle + 1;
+			}
+			else high = low - 1;
+		}
+	}
+	return -1;
+}
+
+int main()
+{
+	int a[1000] ; 
+	for(int i = 0 ; i < 1000 ; i++)
+	{
+		a[i] = i ; 
+	}
+	cout<<binarySearch(a,1000,599)<<endl;
+	for(int i = 0 ; i < 400 ; i++)
+	{
+		a[i] = i+1000 ; 
+	}
+	for(int i = 400 ; i < 1000 ; i++)
+	{
+		a[i] = i ; 
+	}
+	cout<<binarySearchCircle(a,1000,599)<<endl;
+
+	int n ; 
+	cin>>n ; 
+	return  0 ; 
+}
